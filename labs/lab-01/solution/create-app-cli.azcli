@@ -1,4 +1,4 @@
-env=dev
+env=peter
 loc=westeurope
 grp=az-native-$env
 ws=az-native-log-$env
@@ -11,11 +11,6 @@ acaenv=acaenv-az-native-$env
 storageAcct=aznativestorage$env
 cosmosDbAcct=az-native-cosmos-nosql-$env
 cosmosDBName=food-nosql-$env
-dbServer=az-native-sql-$env
-sqlDBName=az-native-db-$env
-sqlDBAdmin=sqladmin
-sqlDBPwd=Password123@me
-sqlEntraAdmin='alexander.pajer@integrations.at'
 sbNS=aznativesb$env
 sbQueue=food-queue
 apim=az-native-apim-$env
