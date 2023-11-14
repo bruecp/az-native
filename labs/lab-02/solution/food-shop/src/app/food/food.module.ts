@@ -9,8 +9,8 @@ import {
 import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
 
-import { UtilsModule } from '../extensions/utils.module';
-import { MaterialModule } from '../material.module';
+
+
 import { FoodContainerComponent } from './catalog/catalog-container/food-container.component';
 import { FoodEditComponent } from './catalog/food-edit/food-edit.component';
 import { FoodListComponent } from './catalog/food-list/food-list.component';
@@ -30,7 +30,17 @@ import { FoodEntityService } from './state/catalog/food-entity.service';
 import { CustomUrlHttpGenerator } from './state/custom-url-generator';
 
 @NgModule({
-  declarations: [
+    imports: [
+    CommonModule,
+    FoodRoutingModule,
+    ReactiveFormsModule,
+    FormsModule,
+    ColumnDirective,
+    RowDirective,
+    BoxedDirective,
+    BorderDirective,
+    StoreModule.forFeature(cartFeature),
+    EffectsModule.forFeature([cartEffects]),
     FoodContainerComponent,
     FoodListComponent,
     FoodEditComponent,
@@ -40,30 +50,15 @@ import { CustomUrlHttpGenerator } from './state/custom-url-generator';
     StatusComponent,
     CheckoutFormComponent,
     CheckoutConfirmedComponent,
-  ],
-
-  imports: [
-    CommonModule,
-    FoodRoutingModule,
-    MaterialModule,
-    ReactiveFormsModule,
-    FormsModule,
-    UtilsModule,
-    ColumnDirective,
-    RowDirective,
-    BoxedDirective,
-    BorderDirective,
-    StoreModule.forFeature(cartFeature),
-    EffectsModule.forFeature([cartEffects]),
-  ],
-  providers: [
-    {
-      provide: HttpUrlGenerator,
-      useClass: CustomUrlHttpGenerator,
-    },
-    FoodEntityService,
-    FoodDataService,
-  ],
+],
+    providers: [
+        {
+            provide: HttpUrlGenerator,
+            useClass: CustomUrlHttpGenerator,
+        },
+        FoodEntityService,
+        FoodDataService,
+    ],
 })
 export class FoodModule {
   constructor(

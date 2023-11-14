@@ -27,24 +27,22 @@ import { MsalBroadcastServiceMock } from './mocks/MsalBroadcastService.mock';
 import { AuthEffects } from './state/auth.effects';
 import { authFeatureKey, authReducer } from './state/auth.reducer';
 import { CurrentUserComponent } from './components/current-user/current-user.component';
-import { MaterialModule } from '../material.module';
+
 
 const modules = environment.authEnabled
   ? [
-      CommonModule,
-      MaterialModule,
-      HttpClientModule,
-      StoreModule.forFeature(authFeatureKey, authReducer),
-      EffectsModule.forFeature([AuthEffects]),
-      MsalModule,
-    ]
+    CommonModule,
+    HttpClientModule,
+    StoreModule.forFeature(authFeatureKey, authReducer),
+    EffectsModule.forFeature([AuthEffects]),
+    MsalModule,
+]
   : [
-      CommonModule,
-      MaterialModule,
-      HttpClientModule,
-      StoreModule.forFeature(authFeatureKey, authReducer),
-      EffectsModule.forFeature([]),
-    ];
+    CommonModule,
+    HttpClientModule,
+    StoreModule.forFeature(authFeatureKey, authReducer),
+    EffectsModule.forFeature([]),
+];
 
 const providers = environment.authEnabled
   ? [
@@ -76,9 +74,8 @@ const providers = environment.authEnabled
     ];
 
 @NgModule({
-  declarations: [LoginComponent, CurrentUserComponent],
-  exports: [LoginComponent, CurrentUserComponent],
-  imports: modules,
-  providers: providers,
+    exports: [LoginComponent, CurrentUserComponent],
+    imports: [...modules, LoginComponent, CurrentUserComponent],
+    providers: providers,
 })
 export class MsalAuthUtilModule {}

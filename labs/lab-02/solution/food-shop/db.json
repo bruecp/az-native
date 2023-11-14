@@ -6,7 +6,7 @@
       "customer": {
         "name": "Alexander Pajer",
         "email": "alexander.pajer@integrations.at",
-        "address": "Hauptstraße 1, Wien, Austria"
+        "phone": "+43 664 1234567"
       },
       "payment": {
         "type": "Credit Card",

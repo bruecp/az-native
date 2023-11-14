@@ -1,3 +1,4 @@
+import { AsyncPipe, NgFor } from '@angular/common';
 import { Component, DestroyRef, OnInit, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import {
@@ -7,15 +8,22 @@ import {
   skip,
   startWith
 } from 'rxjs';
-import { environment } from 'src/environments/environment';
+import { environment } from '../../../../environments/environment';
 import { CartFacade } from '../../state/cart/cart.facade';
 import { FoodEntityService } from '../../state/catalog/food-entity.service';
 import { CartItem } from '../cart-item.model';
+import { ShopItemComponent } from '../shop-item/shop-item.component';
 
 @Component({
   selector: 'app-food-shop-container',
   templateUrl: './food-shop-container.component.html',
   styleUrls: ['./food-shop-container.component.scss'],
+  standalone: true,
+  imports: [
+    NgFor,
+    ShopItemComponent,
+    AsyncPipe,
+  ],
 })
 export class FoodShopContainerComponent implements OnInit {
   destroyRef = inject(DestroyRef);

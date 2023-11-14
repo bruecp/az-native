@@ -1,34 +1,29 @@
-.content {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
+.gridContent{
+  display: grid;
+  grid-template-columns: 200px auto;
+  grid-template-rows: 3fr 1fr;
+  grid-template-areas: 
+    "imgContainer textContainer"
+    "imgContainer actionsContainer";
 }
 
 .imgContainer {
-  min-width: 25%;
+  grid-area: imgContainer;
 }
 
 img {
-  padding-left: 1rem;
+  padding-left: 0.5rem;
   padding-top: 1rem;
   max-width: 200px;
 }
 
 .textContainer {
-  padding-left: 100px;
+  grid-area: textContainer;
   padding-top: 1rem;
 }
 
-.mat-mdc-card-actions {
-  padding-right: 1rem;
-}
-
-.mat-mdc-card-title {
-  padding-top: 0.5rem;
-}
-
-.mat-mdc-card-image:first-child {
-  margin-top: 0px;
-  border-top-left-radius: inherit;
-  border-top-right-radius: inherit;
+.actionsContainer {
+  grid-area: actionsContainer;
+  display: flex;
+  flex-direction: row-reverse;
 }

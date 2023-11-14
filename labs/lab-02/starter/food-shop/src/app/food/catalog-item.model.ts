@@ -5,4 +5,5 @@ export class CatalogItem {
   inStock: number = 0;
   code?: string = '';
   pictureUrl?: string;
+  description?: string;
 }

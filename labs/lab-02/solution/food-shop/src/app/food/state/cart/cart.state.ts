@@ -16,7 +16,7 @@ export const cartFeature = createFeature({
   name: 'cart',
   reducer: createReducer(
     initialState,
-    on(cartActions.toogglePersist, (state) => ({
+    on(cartActions.togglePersist, (state) => ({
       ...state,
       persist: !state.persist,
     })),

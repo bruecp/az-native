@@ -1,16 +1,35 @@
 import { Component, inject } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { MsalAuthFacade } from 'src/app/auth/state/auth.facade';
-import { environment } from 'src/environments/environment';
 import { CartFacade } from '../../food/state/cart/cart.facade';
+import { EuroPipe } from '../../shared/euro.pipe';
+import { CurrentUserComponent } from '../../auth/components/current-user/current-user.component';
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { NgIf, AsyncPipe } from '@angular/common';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-sidebar',
   templateUrl: './sidebar.component.html',
   styleUrls: ['./sidebar.component.scss'],
+  standalone: true,
+  imports: [
+    MatToolbarModule,
+    NgIf,
+    MatSlideToggleModule,
+    ReactiveFormsModule,
+    MatButtonModule,
+    MatIconModule,
+    CurrentUserComponent,
+    AsyncPipe,
+    EuroPipe,
+  ],
 })
 export class SidebarComponent {
   cart = inject(CartFacade);

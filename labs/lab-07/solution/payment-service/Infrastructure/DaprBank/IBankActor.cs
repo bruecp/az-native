@@ -2,10 +2,11 @@ namespace IBankActorInterface;
 
 using System.Threading.Tasks;
 using Dapr.Actors;
+using DaprBankActor;
 
 public class AccountBalance
 {
-    public string? AccountId { get; set; }
+    public string AccountId { get; set; }
 
     public decimal Balance { get; set; }
 }
@@ -17,6 +18,7 @@ public class WithdrawRequest
 public class DepositRequest
 {
     public decimal Amount { get; set; }
+    public string AccountId { get; set; }
 }
 
 public enum TransferType {
@@ -28,10 +30,8 @@ public interface IBankActor : IActor
 {
     Task<AccountBalance> SetupNewAccount(decimal startingDeposit);
     Task<AccountBalance> GetAccountBalance();
-    Task Withdraw(WithdrawRequest withdraw);
-    Task Desposit(DepositRequest deposit);   
-
-    Task UnRegisterReoccuring(TransferType type);
-    Task RegisterReoccuring(TransferType type, decimal amount);
-
+    Task<TransactionResponse> Withdraw(WithdrawRequest withdraw);
+    Task<TransactionResponse> Deposit(DepositRequest deposit);   
+    Task UnRegisterReoccurring(TransferType type);
+    Task RegisterReoccurring(TransferType type, decimal amount);
 }

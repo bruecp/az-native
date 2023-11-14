@@ -42,8 +42,7 @@
             "appPort": 5004,
             "label": "dapr-debug",
             "type": "dapr",
-            "dependsOn": "build",
-            "componentsPath": "components",
+            "dependsOn": "build"
         },
         {
             "appId": "payment-service",

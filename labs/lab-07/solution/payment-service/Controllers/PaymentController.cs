@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Dapr.Actors;
 using Dapr.Actors.Client;
 using Dapr.Actors.Runtime;
+using Dapr.Client;
 using IBankActorInterface;
 using Microsoft.AspNetCore.Mvc;
 
@@ -15,11 +16,13 @@ namespace FoodApp
     {
         AILogger logger;
         IPaymentRepository payment;
+        DaprClient daprClient;
 
-        public PaymentController(IPaymentRepository repository, AILogger aILogger)
+        public PaymentController(IPaymentRepository repository,  DaprClient dapr, AILogger aILogger)
         {
             logger = aILogger;
             payment = repository;
+            daprClient = dapr;
         }
 
         // http://localhost:PORT/payment/create
@@ -46,11 +49,19 @@ namespace FoodApp
                 // await this.payment.AddPaymentAsync(payment);
 
                 // To keep things simple we will just execute the payment against our dapr bank service
-                // Make sure to created the bank account with the same account number 
+                // Make sure to created the bank account with the same account number in advance
+                // You will find a sample in the bank client of the starter
                 var usersBank = ActorProxy.Create<IBankActor>(new ActorId(paymentRequest.PaymentInfo.AccountNumber), "BankActor");
-                // In a more realistic scenario we would need to check if the payment was successful - at the moment we just assume it was
-                await usersBank.Withdraw(new WithdrawRequest() { Amount = paymentRequest.Amount });
-                // Now we could issue a payment response just like we did in the previous lab
+                var withdrawResp = await usersBank.Withdraw(new WithdrawRequest() { Amount = paymentRequest.Amount });
+                // Now we could issue a payment response just like we did in 
+                PaymentResponse paymentResponse = new PaymentResponse()
+                {
+                    OrderId = paymentRequest.OrderId,
+                    Status = withdrawResp.Status,
+                    Data = withdrawResp.Message
+                };
+
+                await daprClient.PublishEventAsync("food-pubsub", "payment-response", paymentResponse);
             }
         }
 

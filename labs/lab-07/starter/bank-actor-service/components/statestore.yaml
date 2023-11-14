@@ -10,6 +10,8 @@ spec:
     value: localhost:6379
   - name: redisPassword
     value: ""
+  - name: actorStateStore
+    value: "true"
 
 # apiVersion: dapr.io/v1alpha1
 # kind: Component

@@ -11,11 +11,14 @@ import {
   RedirectRequest,
 } from '@azure/msal-browser';
 import { environment } from '../../../../environments/environment';
+import { MatButtonModule } from '@angular/material/button';
 
 @Component({
-  selector: 'app-login',
-  templateUrl: './login.component.html',
-  styleUrls: ['./login.component.scss'],
+    selector: 'app-login',
+    templateUrl: './login.component.html',
+    styleUrls: ['./login.component.scss'],
+    standalone: true,
+    imports: [MatButtonModule],
 })
 export class LoginComponent implements OnInit {
   entryPic = '/assets/images/food.png';

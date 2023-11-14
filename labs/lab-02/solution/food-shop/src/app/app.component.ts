@@ -3,7 +3,7 @@ import { MatDrawerMode } from '@angular/material/sidenav';
 import { NavigationEnd, Router } from '@angular/router';
 import { Subject, takeUntil } from 'rxjs';
 import { filter, map, startWith, tap } from 'rxjs/operators';
-import { environment } from 'src/environments/environment';
+import { environment } from '../environments/environment';
 import { MsalAuthFacade } from './auth/state/auth.facade';
 import { SidenavFacade } from './state/sidenav/sidenav.facade';
 

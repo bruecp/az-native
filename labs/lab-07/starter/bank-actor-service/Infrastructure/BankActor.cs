@@ -32,7 +32,7 @@ public class BankActor : Actor, IBankActor, IRemindable
         return balance;
     }
 
-    public Task UnRegisterReoccuring(TransferType type) 
+    public Task UnRegisterReoccurring(TransferType type) 
     {
         return type switch 
         {
@@ -42,7 +42,7 @@ public class BankActor : Actor, IBankActor, IRemindable
         };
     }
 
-    public Task RegisterReoccuring(TransferType type, decimal amount)
+    public Task RegisterReoccurring(TransferType type, decimal amount)
     {
         var serializedParams = JsonSerializer.SerializeToUtf8Bytes(amount);
 
@@ -61,7 +61,7 @@ public class BankActor : Actor, IBankActor, IRemindable
         return reminderName switch
         {
             "withdraw" => this.Withdraw(new WithdrawRequest(){ Amount = request}),
-            "deposit" => this.Desposit(new DepositRequest(){ Amount = request}),
+            "deposit" => this.Deposit(new DepositRequest(){ Amount = request}),
             _ => Task.CompletedTask 
         };
     }
@@ -72,20 +72,28 @@ public class BankActor : Actor, IBankActor, IRemindable
         return balance;
     }
 
-    public async Task Desposit(DepositRequest deposit)
+    public async Task<TransactionResponse> Deposit(DepositRequest deposit)
     {
         var balance = await this.StateManager.GetStateAsync<AccountBalance>(AccountId);
         var updated = this.bank.Deposit(balance.Balance, deposit.Amount);
         balance.Balance = updated;
-        await this.StateManager.SetStateAsync(AccountId, balance);
+        await StateManager.SetStateAsync(AccountId, balance);
+        return new TransactionResponse(){Status = "Success", Message = $"Deposited {deposit.Amount}"};
     }
-    public async Task Withdraw(WithdrawRequest withdraw)
+    public async Task<TransactionResponse> Withdraw(WithdrawRequest withdraw)
     {
+        var response = new TransactionResponse(){Status = "Success", Message = $"Withdrew {withdraw.Amount}"};
         var balance = await this.StateManager.GetStateAsync<AccountBalance>(AccountId);
-
+        if(balance.Balance < withdraw.Amount)
+        {
+            response.Status = "Failure";
+            response.Message = $"Insufficient funds to withdraw {withdraw.Amount}";
+            return response;
+        }
         var updated = this.bank.Withdraw(balance.Balance, withdraw.Amount);
         balance.Balance = updated;
         await this.StateManager.SetStateAsync(AccountId, balance);
+        return response;
     }
 
     protected override Task OnActivateAsync()

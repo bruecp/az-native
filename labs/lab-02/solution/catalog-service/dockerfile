@@ -18,7 +18,7 @@ ENTRYPOINT ["dotnet", "catalog-service.dll"]
 # docker run -it --rm -p 5051:80 catalog-service
 
 # Run Image with env vars
-# docker run -it --rm -p 5051:80 catalog-service -e "App:Title=Catalog Service Env"
+# docker run -it --rm -p 5051:80 catalog-service -e "App:UserSQLite=true" -e "App:ConnectionStrings:SQLServerConnection=<SQLSERVER_CONNECTION_STRING>"
 
 # Browse using: 
 # http://localhost:5051

@@ -7,7 +7,7 @@
             "type": "process",
             "args": [
                 "build",
-                "${workspaceFolder}/bank-actor-service.csproj",
+                "${workspaceFolder}/BankActor.csproj",
                 "/property:GenerateFullPaths=true",
                 "/consoleloggerparameters:NoSummary;ForceNoAlign"
             ],
@@ -19,7 +19,7 @@
             "type": "process",
             "args": [
                 "publish",
-                "${workspaceFolder}/bank-actor-service.csproj",
+                "${workspaceFolder}/BankActor.csproj",
                 "/property:GenerateFullPaths=true",
                 "/consoleloggerparameters:NoSummary;ForceNoAlign"
             ],
@@ -33,19 +33,19 @@
                 "watch",
                 "run",
                 "--project",
-                "${workspaceFolder}/bank-actor-service.csproj"
+                "${workspaceFolder}/BankActor.csproj"
             ],
             "problemMatcher": "$msCompile"
         },
         {
-            "appId": "bank-actor",
-            "appPort": 5015,
+            "appId": "bank-actor-service",
+            "appPort": 5005,
             "label": "dapr-debug",
             "type": "dapr",
             "dependsOn": "build"
         },
         {
-            "appId": "bank-actor",
+            "appId": "bank-actor-service",
             "label": "daprd-down",
             "type": "daprd-down"
         }

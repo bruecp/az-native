@@ -7,13 +7,27 @@ import {
   SimpleChanges,
   inject,
 } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { CatalogItem } from '../../catalog-item.model';
+import { MatButtonModule } from '@angular/material/button';
+import { NgIf } from '@angular/common';
+import { MatInputModule } from '@angular/material/input';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatCardModule } from '@angular/material/card';
 
 @Component({
-  selector: 'app-food-edit',
-  templateUrl: './food-edit.component.html',
-  styleUrls: ['./food-edit.component.scss'],
+    selector: 'app-food-edit',
+    templateUrl: './food-edit.component.html',
+    styleUrls: ['./food-edit.component.scss'],
+    standalone: true,
+    imports: [
+        ReactiveFormsModule,
+        MatCardModule,
+        MatFormFieldModule,
+        MatInputModule,
+        NgIf,
+        MatButtonModule,
+    ],
 })
 export class FoodEditComponent implements OnChanges {
   @Input() food: CatalogItem = new CatalogItem();

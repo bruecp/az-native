@@ -4,6 +4,10 @@
 <form [formGroup]="orderForm" border>
   <div formGroupName="customer" column border>
     <mat-form-field>
+      <mat-label>Id</mat-label>
+      <input matInput  formControlName="id" />
+    </mat-form-field>
+    <mat-form-field>
       <mat-label>Name</mat-label>
       <input matInput  formControlName="name" />
     </mat-form-field>
@@ -12,8 +16,8 @@
       <input matInput formControlName="email" />
     </mat-form-field>
     <mat-form-field>
-      <mat-label>Address</mat-label>
-      <input matInput formControlName="address" />
+      <mat-label>Phone</mat-label>
+      <input matInput formControlName="phone" />
     </mat-form-field>
   </div>
 
@@ -24,18 +28,35 @@
     </mat-form-field>
     <mat-form-field>
       <mat-label>Account</mat-label>
-      <input matInput formControlName="account" />
+      <input matInput formControlName="accountNumber" />
+    </mat-form-field>
+  </div>
+
+  <div formGroupName="shippingAddress" column border>
+    <mat-form-field>
+      <mat-label>Street</mat-label>
+      <input matInput placeholder="Street" formControlName="street" />
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>zipCode</mat-label>
+      <input matInput formControlName="zipCode" />
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>city</mat-label>
+      <input matInput formControlName="city" />
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>country</mat-label>
+      <input matInput formControlName="country" />
     </mat-form-field>
   </div>
 
   <div formArrayName="items" border>
     <ng-container *ngFor="let cartItemForm of this.orderForm.controls['items'].controls; let i = index">
       <div formGroupName="{{i}}" class="row">
-        <input type="text" formControlName="itemId" class="id"/>
-        <input type="text" formControlName="itemName" class="name" />
-        <label>quantity:</label>
         <input type="text" formControlName="itemQuantity" class="quantity" />
-        <label>price:</label>
+        <input type="text" formControlName="itemName" class="name" />
+        <label>item price:</label>
         <input type="text" formControlName="itemPrice" class="price"/>
       </div>
     </ng-container>

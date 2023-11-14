@@ -7,7 +7,7 @@ ns=config-app
 
 az group create -n $grp -l $loc
 
-az aks create -g $grp -n $aks --node-count 1 --attach-acr $acr --generate-ssh-keys --attach-acr $acr
+az aks create -g $grp -n $aks --node-count 1 --attach-acr $acr --generate-ssh-keys --attach-acr $acr 
 az aks get-credentials -g $grp -n $aks
 
 # Create a namespace

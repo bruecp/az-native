@@ -46,6 +46,15 @@
                 "/Views": "${workspaceFolder}/Views"
             },
             "postDebugTask": "daprd-down"
+        },
+        {
+            "name": "Docker .NET Launch",
+            "type": "docker",
+            "request": "launch",
+            "preLaunchTask": "docker-run: debug",
+            "netCore": {
+                "appProject": "${workspaceFolder}/catalog-service.csproj"
+            }
         }
     ]
 }

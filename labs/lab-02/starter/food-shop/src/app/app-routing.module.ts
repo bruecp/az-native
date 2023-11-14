@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { MsalGuard } from '@azure/msal-angular';
-import { environment } from 'src/environments/environment';
+import { environment } from '../environments/environment';
 import { AboutComponent } from './about/about.component';
 import { HomeComponent } from './home/home.component';
 
@@ -27,4 +27,4 @@ const isIframe = window !== window.parent && !window.opener;
   ],
   exports: [RouterModule],
 })
-export class AppRoutingModule {}
+export class AppRoutingModule { }

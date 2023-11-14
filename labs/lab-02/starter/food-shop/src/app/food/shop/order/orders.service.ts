@@ -1,23 +1,19 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
-import { environment } from '../../../../environments/environment.development';
-import { CartItem } from '../cart-item.model';
+import { AILoggerService } from 'src/app/logger/ai-logger.service';
+import { environment } from '../../../../environments/environment';
+import { OrderEventResponse } from './order-event-response';
 
 @Injectable({
   providedIn: 'root'
 })
 export class OrdersService {
   http = inject(HttpClient);
-
-  addToCart(item: CartItem) {
-
-  }
-
-  removeFromCart(item: CartItem) {
-
-  }
+  logger = inject(AILoggerService);
 
   checkout(order: any) {
-    return this.http.post(`${environment.ordersApi}orders/add`, order);
+    this.logger.logEvent('ShopUI - Checkout Order', order);
+
+    return this.http.post<OrderEventResponse>(`${environment.ordersApi}/orders/create`, order);
   }
 }

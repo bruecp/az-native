@@ -20,6 +20,9 @@ builder.Services.AddSingleton<AILogger>();
 PaymentRepository cosmosDbService = new PaymentRepository(cfg.CosmosDB.ConnectionString, cfg.CosmosDB.DBName, cfg.CosmosDB.Container);
 builder.Services.AddSingleton<IPaymentRepository>(cosmosDbService);
 
+// Dapr
+builder.Services.AddDaprClient();
+
 builder.Services.AddControllers();
 
 builder.Services.AddEndpointsApiExplorer();

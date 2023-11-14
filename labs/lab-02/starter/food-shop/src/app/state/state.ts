@@ -1,7 +1,7 @@
 import { ApplicationInsights } from '@microsoft/applicationinsights-web';
 import { ActionReducer, ActionReducerMap, MetaReducer } from '@ngrx/store';
 import { environment } from '../../environments/environment';
-import { AILoggerService } from '../logger/ailogger.service';
+import { AILoggerService } from '../logger/ai-logger.service';
 import * as fromMenu from './sidenav/sidenav.state';
 
 export interface State {

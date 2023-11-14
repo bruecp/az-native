@@ -30,11 +30,7 @@ namespace DaprBankActor
             {
                 app.UseDeveloperExceptionPage();
             }
-            else
-            {
-                app.UseHsts();
-            }
-
+           
             app.UseRouting();
 
             app.UseEndpoints(endpoints =>

@@ -1,4 +1,14 @@
 @ordersUrl = https://localhost:5002
+@bankUrl = http://localhost:5004
+
+### Setup the bank account
+POST {{bankUrl}}/bankactor/deposit
+content-type: application/json
+
+{
+    "accountid": "9876",
+    "amount": 1000
+}
 
 ### Add new order
 POST {{ordersUrl}}/orders/create HTTP/1.1
@@ -8,14 +18,14 @@ content-type: application/json
     "id": "1",
     "type": "order",
     "customer": {
-        "Id": "1",
-        "name": "Alexander Pajer",
-        "email": "alexander.pajer@integrations.at",
+        "Id": "5",
+        "name": "Marcela Tatra",
+        "email": "marcela.tatra@integrations.sk",
         "phone": "+43 123 456 789"
     },
     "payment": {
         "type": "Bank Transfer",
-        "accountNumber": "1234"
+        "accountNumber": "9876"
     },
     "items": [
         {

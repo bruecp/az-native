@@ -1,7 +1,7 @@
 
 export const mockOrder = {
-  customer: { id: 'cysdss', name: 'Alexander Pajer', address: 'Hauptstraße 1, Wien, Austria', email: 'alexander.pajer@integrations.at' },
-  payment: { type: 'Credit Card', account: '**** **** **** 1234' },
-  items: [],
-  status: 'cart'
+  customer: { id: '1', name: 'Alexander Pajer', phone: '+43 664 436 07 77', email: 'alexander.pajer@integrations.at' },
+  payment: { type: 'Bank Account', accountNumber: '1234' },
+  shippingAddress: { street: 'Am Himmel 1', city: 'Wien', country: 'Austria', zipCode: '1190' },
+  items: []
 }

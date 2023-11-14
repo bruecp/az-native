@@ -8,8 +8,8 @@ describe('CheckoutConfirmedComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [CheckoutConfirmedComponent]
-    });
+    imports: [CheckoutConfirmedComponent]
+});
     fixture = TestBed.createComponent(CheckoutConfirmedComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

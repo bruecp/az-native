@@ -1,12 +1,21 @@
+import { NgFor } from '@angular/common';
 import { Component, EventEmitter, Input, Output, SimpleChanges, inject } from '@angular/core';
-import { Order } from '../../order/order.model';
-import { FormArray, FormBuilder, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { MatButtonModule } from '@angular/material/button';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { EuroPipe } from '../../../../shared/euro.pipe';
+import { BorderDirective, ColumnDirective } from '../../../formatting-directives';
 import { CartItem } from '../../cart-item.model';
+import { Order } from '../../order/order.model';
 
 @Component({
   selector: 'app-checkout-form',
   templateUrl: './checkout-form.component.html',
-  styleUrls: ['./checkout-form.component.scss']
+  styleUrls: ['./checkout-form.component.scss'],
+  standalone: true,
+  imports: [MatToolbarModule, ReactiveFormsModule, BorderDirective, ColumnDirective, MatFormFieldModule, MatInputModule, NgFor, MatButtonModule, EuroPipe]
 })
 export class CheckoutFormComponent {
   @Input({ required: true }) order: Order = new Order();
@@ -16,16 +25,23 @@ export class CheckoutFormComponent {
   orderForm = this.fb.group(
     {
       customer: this.fb.group({
+        id: [{ value: this.order.customer.id }, { validators: [Validators.required] }],
         name: [this.order.customer.name, { validators: [Validators.required] }],
         email: [
           this.order.customer.email,
           { validators: [Validators.email, Validators.required] },
         ],
-        address: [this.order.customer.address, { validators: [Validators.required] }],
+        phone: [this.order.customer.phone, { validators: [Validators.required] }],
+      }),
+      shippingAddress: this.fb.group({
+        street: [this.order.shippingAddress.street, { validators: [Validators.required] }],
+        city: [this.order.shippingAddress.city, { validators: [Validators.required] }],
+        country: [this.order.shippingAddress.country, { validators: [Validators.required] }],
+        zipCode: [this.order.shippingAddress.zipCode, { validators: [Validators.required] }],
       }),
       payment: this.fb.group({
         type: [this.order.payment.type, { validators: [Validators.required] }],
-        account: [this.order.payment.account, { validators: [Validators.required] }]
+        accountNumber: [this.order.payment.accountNumber, { validators: [Validators.required] }]
       }),
       items: this.fb.array([]),
     });
@@ -44,7 +60,6 @@ export class CheckoutFormComponent {
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['order']) {
-      console.log("changes: ", changes['order'].currentValue);
       this.orderForm.patchValue(changes['order'].currentValue);
       this.createOrderItems(this.order.items);
     }
@@ -52,7 +67,6 @@ export class CheckoutFormComponent {
 
   completeCheckout() {
     const o = Object.assign({ ...this.order }, this.orderForm.value, { items: [...this.order.items] });
-    console.log("checking out order: ", o);
     this.onCheckout.emit(o);
   }
 }
