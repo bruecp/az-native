@@ -1,0 +1,32 @@
+version: '3.4'
+
+services: 
+  catalog-service:
+    image: catalog-service
+    ports: 
+      - "5051:80"
+    environment:
+      - App:UseEnv=true 
+      - App:UseSQLite=false 
+      - App:ConnectionStrings:SQLServerConnection=Server=tcp:aznativesqlpeter.database.windows.net,1433;Initial Catalog=aznativesql;Persist Security Info=False;User ID=aznativeadmin;Password=P@ssw0rd4peter;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;
+  orders-service:
+    image: order-service
+    ports:
+      - "5052:80"
+    environment:
+      - App__2__AuthEnabled=false
+  food-shop-ui:
+    image: food-shop-ui
+    ports:
+      - "5053:80"      
+    environment:
+      - ENV_CATALOG_API_URL=http://localhost:5051
+      - ENV_ORDERS_API_URL=http://localhost:5052
+
+    depends_on: 
+      - catalog-service
+      - orders-service
+
+# catalog-service tester: http://localhost:5051/
+# orders-service tester: http://localhost:5052/
+# food-shop-ui: http://localhost:5053/

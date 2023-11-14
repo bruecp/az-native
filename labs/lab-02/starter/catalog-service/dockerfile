@@ -1,0 +1,26 @@
+# Build Image
+FROM mcr.microsoft.com/dotnet/sdk:6.0-alpine AS build
+WORKDIR /build
+
+COPY . .
+RUN dotnet restore "catalog-service.csproj"
+RUN dotnet publish -c Release -o /app
+
+# Runtime Image
+FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS final
+WORKDIR /app
+COPY --from=build /app .
+ENTRYPOINT ["dotnet", "catalog-service.dll"]
+
+# Build Image
+# docker build --rm -f dockerfile -t catalog-service .
+
+# Run Image without env vars
+# docker run -it --rm -p 5051:80 catalog-service -e "App:UseEnv=true" -e "App:UseSQLite=false" -e "App:ConnectionStrings:SQLServerConnection=Server=tcp:aznativesqlpeter.database.windows.net,1433;Initial Catalog=aznativesql;Persist Security Info=False;User ID=aznativeadmin;Password=P@ssw0rd4peter;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;"
+
+# Browse using: 
+# http://localhost:5051/
+
+# Publish Image to dockerhub
+# docker tag catalog-service arambazamba/catalog-service
+# docker push arambazamba/catalog-service
