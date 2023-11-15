@@ -1,4 +1,5 @@
-@ordersUrl = https://localhost:5002
+#@ordersUrl = https://localhost:5002
+@ordersUrl = https://orders-service.gentlemoss-82f116ed.westeurope.azurecontainerapps.io
 @customerId = 1
 
 ### Add new order

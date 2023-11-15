@@ -1,4 +1,4 @@
-env=dev
+env=peter
 loc=westeurope
 grp=az-native-$env
 acr=aznativecontainers$env
@@ -8,15 +8,15 @@ imgOrders=orders-service
 imgEventProcessor=order-event-processor
 
 cd catalog-service
-az acr build --image $imgCatalog --registry $acr --file Dockerfile .
+az acr build --image $imgCatalog --registry $acr --file dockerfile .
 cd ..
 
 cd orders-service-cqrs
-az acr build --image $imgOrders --registry $acr --file Dockerfile .
+az acr build --image $imgOrders --registry $acr --file dockerfile .
 cd ..
 
 cd order-events-processor
-az acr build --image $imgEventProcessor --registry $acr --file Dockerfile .
+az acr build --image $imgEventProcessor --registry $acr --file dockerfile .
 cd ..
 
 cd food-shop

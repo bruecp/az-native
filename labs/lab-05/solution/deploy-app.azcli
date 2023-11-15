@@ -1,4 +1,4 @@
-env=dev
+env=peter
 loc=westeurope
 grp=az-native-$env
 cosmosDbAcct=az-native-cosmos-nosql-$env
@@ -6,7 +6,7 @@ cosmosDBName=food-nosql-$env
 endpoint=https://$cosmosDbAcct.documents.azure.com:443
 vault=az-native-kv-$env
 acr=aznativecontainers$env
-acaenv=acaenv-az-native-$env
+acaenv=managedEnvironment-aznativepeter-be46
 storageAcct=aznativestorage$env
 
 pwd=$(az acr credential show -n $acr --query passwords[0].value -o tsv)
@@ -22,16 +22,36 @@ az cosmosdb sql database create --account-name $cosmosDbAcct --name $cosmosDBNam
 az cosmosdb sql container create --account-name $cosmosDbAcct --database-name $cosmosDBName --name orders --partition-key-path "/customer/Id" -g $grp
 az cosmosdb sql container create --account-name $cosmosDbAcct --database-name $cosmosDBName --name order-events --partition-key-path "/id" -g $grp
 
+
 ## Catalog Service
+
+echo $$grp
+echo $acr.azurecr.io/catalog-service
+echo $acaenv
+echo $loginSrv
+echo $acr
+echo $pwd
+
+# az containerapp create -n catalog-service -g $grp \
+#     --image $acr.azurecr.io/catalog-service \
+#     --environment $acaenv \
+#     --target-port 80 --ingress external \
+#     --min-replicas 0 --max-replicas 1 \
+#     --registry-server $loginSrv \
+#     --registry-username $acr \
+#     --registry-password $pwd \
+#     --env-vars "App__UseSQLite=true"
+
 az containerapp create -n catalog-service -g $grp \
-    --image $acr.azurecr.io/catalog-service \
-    --environment $acaenv \
+    --image aznativecontainerspeter.azurecr.io/catalog-service \
+    --environment managedEnvironment-aznativepeter-be46 \
     --target-port 80 --ingress external \
     --min-replicas 0 --max-replicas 1 \
-    --registry-server $loginSrv \
-    --registry-username $acr \
-    --registry-password $pwd \
+    --registry-server aznativecontainerspeter.azurecr.io \
+    --registry-username aznativecontainerspeter \
+    --registry-password wX3Lw+Rs8rul09FyCSoDJttKoPeQjNL3lo8kyqwdc2+ACRBBJ13J \
     --env-vars "App__UseSQLite=true"
+
 
 az containerapp ingress cors enable -n catalog-service -g $grp --allowed-origins * --allow-credentials true    
 
@@ -42,14 +62,24 @@ echo $catalogUrl
 ## Orders Service
 cosmosKey=$(az keyvault secret show --vault-name $vault --name "cosmosKey" --query  value -o tsv)    
 
+# az containerapp create -n orders-service -g $grp \
+#     --image $acr.azurecr.io/orders-service \
+#     --environment $acaenv \
+#     --target-port 80 --ingress external \
+#     --min-replicas 0 --max-replicas 1 \
+#     --registry-server $loginSrv \
+#     --registry-username $acr \
+#     --registry-password $pwd \
+#     --env-vars "CosmosDB__AccountKey=$cosmosKey" 
+
 az containerapp create -n orders-service -g $grp \
-    --image $acr.azurecr.io/orders-service \
-    --environment $acaenv \
+    --image aznativecontainerspeter.azurecr.io/orders-service \
+    --environment managedEnvironment-aznativepeter-be46 \
     --target-port 80 --ingress external \
     --min-replicas 0 --max-replicas 1 \
-    --registry-server $loginSrv \
-    --registry-username $acr \
-    --registry-password $pwd \
+    --registry-server aznativecontainerspeter.azurecr.io \
+    --registry-username aznativecontainerspeter \
+    --registry-password wX3Lw+Rs8rul09FyCSoDJttKoPeQjNL3lo8kyqwdc2+ACRBBJ13J \
     --env-vars "CosmosDB__AccountKey=$cosmosKey" 
 
 az containerapp ingress cors enable -n orders-service -g $grp --allowed-origins * --allow-credentials true    
@@ -59,14 +89,24 @@ ordersUrl=$(az containerapp show -n orders-service -g $grp --query properties.co
 echo $ordersUrl
 
 ## Shop UI
+# az containerapp create -n shop-ui -g $grp \
+#     --image $acr.azurecr.io/shop-ui \
+#     --environment $acaenv \
+#     --target-port 80 --ingress external \
+#     --min-replicas 0 --max-replicas 1 \
+#     --registry-server $loginSrv \
+#     --registry-username $acr \
+#     --registry-password $pwd \
+#     --env-vars "ENV_CATALOG_API_URL=https://$catalogUrl" "ENV_ORDERS_API_URL=https://$ordersUrl"     
+
 az containerapp create -n shop-ui -g $grp \
-    --image $acr.azurecr.io/shop-ui \
-    --environment $acaenv \
+    --image aznativecontainerspeter.azurecr.io/shop-ui \
+    --environment managedEnvironment-aznativepeter-be46 \
     --target-port 80 --ingress external \
     --min-replicas 0 --max-replicas 1 \
-    --registry-server $loginSrv \
-    --registry-username $acr \
-    --registry-password $pwd \
+    --registry-server aznativecontainerspeter.azurecr.io \
+    --registry-username aznativecontainerspeter \
+    --registry-password wX3Lw+Rs8rul09FyCSoDJttKoPeQjNL3lo8kyqwdc2+ACRBBJ13J \
     --env-vars "ENV_CATALOG_API_URL=https://$catalogUrl" "ENV_ORDERS_API_URL=https://$ordersUrl"     
 
 ## Order Event Processor
@@ -75,7 +115,7 @@ cosmosDBCon=$(az cosmosdb keys list --name $cosmosDbAcct -g $grp --type connecti
 az functionapp create -n order-event-processor-$env -g $grp -s $storageAcct --consumption-plan-location $loc --functions-version 4
 az functionapp config appsettings set -n order-event-processor-$env -g $grp --settings "CosmosDBConnectionString=$cosmosDBCon"
 
-az functionapp config appsettings set -n order-event-processor-$env -g $grp --settings "DBName=food-nosql-dev"
+az functionapp config appsettings set -n order-event-processor-$env -g $grp --settings "DBName=food-nosql-peter"
 
 az functionapp config appsettings set -n order-event-processor-$env -g $grp --settings "OrdersContainer=orders"
 

@@ -11,7 +11,7 @@ namespace FoodApp.Orders
     {
         [FunctionName("ProcessOrders")]
         public static async Task Run([CosmosDBTrigger(
-            databaseName: "food-nosql-dev",
+            databaseName: "food-nosql-peter",
             collectionName: "order-events",
             ConnectionStringSetting = "CosmosDBConnectionString",
             CreateLeaseCollectionIfNotExists = true,
