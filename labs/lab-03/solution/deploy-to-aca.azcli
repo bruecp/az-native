@@ -1,4 +1,4 @@
-env=dev
+env=peter
 grp=az-native-$env
 loc=westeurope
 acr=aznativecontainers$env
