@@ -1,4 +1,4 @@
-env=dev
+env=peter
 loc=westeurope
 grp=az-native-$env
 cosmosDbAcct=az-native-cosmos-nosql-$env
@@ -30,14 +30,26 @@ echo $sbConStr
 cosmosKey=$(az keyvault secret show --vault-name $vault --name "cosmosKey" --query  value -o tsv)    
 echo $cosmosKey
 
-az containerapp create -n orders-service -g $grp --image $acr.azurecr.io/orders-service:v2 \
-    --environment $acaenv \
+# az containerapp create -n orders-service -g $grp \
+#     --image $acr.azurecr.io/orders-service:v2 \
+#     --environment $acaenv \
+#     --target-port 80 --ingress external \
+#     --min-replicas 0 --max-replicas 1 \
+#     --registry-server $loginSrv \
+#     --registry-username $acr \
+#     --registry-password $pwd \
+#     --env-vars "ServiceBus__ConnectionString=$sbConStr" "CosmosDB__AccountKey=$cosmosKey" 
+
+az containerapp create -n orders-service -g $grp \
+    --image aznativecontainerspeter.azurecr.io/orders-service:v2 \
+    --environment managedEnvironment-aznativepeter-be46 \
     --target-port 80 --ingress external \
     --min-replicas 0 --max-replicas 1 \
-    --registry-server $loginSrv \
-    --registry-username $acr \
-    --registry-password $pwd \
+    --registry-server aznativecontainerspeter.azurecr.io \
+    --registry-username aznativecontainerspeter \
+    --registry-password wX3Lw+Rs8rul09FyCSoDJttKoPeQjNL3lo8kyqwdc2+ACRBBJ13J \
     --env-vars "ServiceBus__ConnectionString=$sbConStr" "CosmosDB__AccountKey=$cosmosKey" 
+
 
 az containerapp ingress cors enable -n orders-service -g $grp --allowed-origins * --allow-credentials true      
 
