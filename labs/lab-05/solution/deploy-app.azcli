@@ -89,15 +89,15 @@ ordersUrl=$(az containerapp show -n orders-service -g $grp --query properties.co
 echo $ordersUrl
 
 ## Shop UI
-# az containerapp create -n shop-ui -g $grp \
-#     --image $acr.azurecr.io/shop-ui \
-#     --environment $acaenv \
-#     --target-port 80 --ingress external \
-#     --min-replicas 0 --max-replicas 1 \
-#     --registry-server $loginSrv \
-#     --registry-username $acr \
-#     --registry-password $pwd \
-#     --env-vars "ENV_CATALOG_API_URL=https://$catalogUrl" "ENV_ORDERS_API_URL=https://$ordersUrl"     
+az containerapp create -n shop-ui -g $grp \
+    --image $acr.azurecr.io/shop-ui \
+    --environment $acaenv \
+    --target-port 80 --ingress external \
+    --min-replicas 0 --max-replicas 1 \
+    --registry-server $loginSrv \
+    --registry-username $acr \
+    --registry-password $pwd \
+    --env-vars "ENV_CATALOG_API_URL=https://$catalogUrl" "ENV_ORDERS_API_URL=https://$ordersUrl"     
 
 az containerapp create -n shop-ui -g $grp \
     --image aznativecontainerspeter.azurecr.io/shop-ui \
