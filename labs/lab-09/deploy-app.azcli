@@ -1,4 +1,4 @@
-env=dev
+env=peter
 loc=westeurope
 grp=az-native-$env
 storageAcct=aznativestorage$env
