@@ -1,4 +1,4 @@
-env=dev
+env=peter
 loc=westeurope
 grp=foodapp-$env
 storage=kitchendashboard$env
